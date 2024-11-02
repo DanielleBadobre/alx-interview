@@ -3,24 +3,41 @@
 
 
 def validUTF8(data):
-    """determines if a given data set represents a valid UTF-8 encoding
     """
-    num_byte = 0
-    for byte in data:
-        byte &= 0xFF
-        if num_byte == 0:
-            if (byte >> 5) == 0b110:
-                num_byte = 1
-            elif (byte >> 4) == 0b1110:
-                num_byte = 2
-            elif (byte >> 3) == 0b11110:
-                num_byte = 3
-            elif (byte >> 7) == 0:
+    Determines if a given data set represents a valid UTF-8 encoding.
+    """
+    # Number of bytes in the current UTF-8 character
+    n_bytes = 0
+    
+    # Masks for checking bytes
+    first_mask = 1 << 7  # 10000000
+    second_mask = 1 << 6  # 01000000
+    
+    for num in data:
+        # Get only the 8 least significant bits
+        byte = num & 255
+        
+        if n_bytes == 0:
+            # Count number of 1s in the beginning of the byte
+            mask = 1 << 7
+            while byte & mask:
+                n_bytes += 1
+                mask = mask >> 1
+                
+            # 1 byte characters
+            if n_bytes == 0:
                 continue
-            else:
+                
+            # Invalid scenarios
+            if n_bytes == 1 or n_bytes > 4:
                 return False
+                
         else:
-            if (byte >> 6) != 0b10:
+            # Check if the byte starts with 10
+            if not (byte & first_mask and not (byte & second_mask)):
                 return False
-        num_byte -= 1
-    return num_byte == 0
+                
+        n_bytes -= 1
+        
+    # Check if all characters were completed
+    return n_bytes == 0
