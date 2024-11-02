@@ -1,13 +1,11 @@
-#/usr/bin/python3
+#!/usr/bin/python3
 """ 0-validate_utf8 """
 
 
 def validUTF8(data):
-    """ 
-    determines if a given data set represents a valid UTF-8 encoding
+    """determines if a given data set represents a valid UTF-8 encoding
     """
     num_byte = 0
-    
     for byte in data:
         byte &= 0xFF
         if num_byte == 0:
