@@ -15,6 +15,4 @@ def makeChange(coins, total):
         for x in range(coin, total + 1):
             dp_array[x] = min(dp_array[x], dp_array[x - coin] + 1)
 
-    if dp_array[total] == float('inf'):
-        return -1
-    return dp_array[total]
+    return dp_array[total] if dp_array[total] != float('inf') else -1
