@@ -1,6 +1,11 @@
 #!/usr/bin/python3
-
+"""
+prime game module
+"""
 def isWinner(x, nums):
+    """
+    iswinner function
+    """
     if x <= 0 or not nums:
         return None
     mx_num = max(nums)
